@@ -3,42 +3,72 @@ import Image from "./assets/front.jpg";
 import Icon from "./assets/google-icon.webp";
 
 function Login() {
-  const initialValues = {email:"", password:"",}
-  const [formValues, setFormValues] = useState(initialValues);
-  const handleChange = (e)=>{
-    const {name,value}= e.target;
-    setFormValues({...formValues, [name]:value})
-    console.log(formValues);
-  }
-  const handleSubmit = (e)=>{
-    
-  } 
+
+    const [email,setEmail] = useState();
+    const [password,setPassword] = useState();
+    const [emailError, setEmailError] = useState(false)
+    const [passwordError, setPasswordError] = useState(false)
+    const emailRegx = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    const characters = "@!%$^&*"
+    const numbers = /0123456789/;
+
+
+const handleEmail = (e) =>{
+let email = e.target.value;
+if (!email.match(emailRegx)){
+    setEmailError(true)
+}
+else{
+    setEmailError(false)
+}
+}
+
+const handlePassword = (e) =>{
+    let password = e.target.value;
+    if(password.length<6){
+        setPasswordError(true)
+    }
+    else{
+        setPasswordError(false)
+    }
+}
+
+const handleSubmit = (e)=>{
+e.preventDefault()
+console.log("Email: " + e.target[0].value + " \n" +"Password: "+ e.target[1].value)
+}
   return (
   <div>
 <section className=" flex bg-gradient-to-r from-[#005ae6] to-cyan-600 min-h-screen justify-center items-center">
-    <div className="flex bg-blue-400 shadow-lg max-w-5xl p-5 rounded-xl items-center">
+    <div className="flex bg-blue-400 shadow-lg max-w-6xl p-5 rounded-xl items-center">
       <div className="md:w-1/2 px-8 text-gray-100">
-    <h2 className="font-bold text-2xl ">Login</h2>
-    <p className="text-sm mt-4">If you are already a memebr please log in</p>
-    <form className="flex flex-col gap-4  " action="">
-      <input className="p-2 mt-8 rounded-sm text-black"    
+    <h2 className="font-bold text-2xl mb-6 ">Login To An Existing Account</h2>
+  
+    <form className="flex flex-col gap-4  " action="" onSubmit={handleSubmit}>
+    
+      <input className="p-2 rounded-sm text-black"
              type="email"
              name="email"
              placeholder="Email"
-             value={formValues.email}
-             onChange={handleChange}
-             onSubmit={handleSubmit} />
+             value={email}
+             onChange={handleEmail}
+            />
+            {emailError ? <span className="text-black text-lg">Invalid Email</span>:""}
 
        <input className="p-2 rounded-sm text-black"
               type="password"
               name="passowrd"
               placeholder="Passowrd"
-              value={formValues.password}
-              onChange={handleChange} />
-              <button className="bg-[#005ae6] rounded-xl py-2 text-white hover:scale-105 duration-300">Log In</button> 
+              value={password}
+              onChange={handlePassword}
+              />
+              {passwordError ? <span className="text-black text-lg">Password length must be greater than 6 characters</span>:""}
+
+            
+              <button className="bg-[#005ae6] rounded-xl py-2 text-white hover:scale-105 duration-300" type="submit">Sign Up</button> 
     </form>
 
-    <div className="mt-10 grid grid-cols-3 items-center text-gray-200">
+    <div className="mt-7 grid grid-cols-3 items-center text-gray-200">
       <hr className="border-gray-200"/>
       <p className="text-center">OR</p>
       <hr className="border-gray-200"/>
@@ -48,13 +78,6 @@ function Login() {
     <img className="w-5 h-5 mr-3 "src={Icon} alt="" />
       Login With Google
     </button>
-  <div>
-  <p className="mt-4 text-xs border-b py-4 "> <a>Forgot Password?</a></p>
-  </div>
-
-  <div className=" mt-3 text-sm flex justify-between items-center">
-    <p>Don't have an account?</p>
-    <button className="py-2 px-5 bg-white rounded-xl text-black hover:scale-105 duration-300">Sign Up</button></div>
     
       </div>
 
